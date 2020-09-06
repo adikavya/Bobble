@@ -1,0 +1,88 @@
+#include <iostream>
+#include<cstring>
+
+using namespace std;
+//Making a trie
+struct TN*getNode(void) 
+{ 
+    struct TN *tNode =  new TN; 
+    tNode->isEndOfWord = false; 
+    for (int i = 0; i < 26; i++) 
+    {
+        tNode->children[i] = NULL; 
+    }
+    return tNode; 
+} 
+ 
+void insert(struct TN *root, string key) 
+{ 
+    struct TN *tCrawl = root; 
+  
+    for (int i = 0; i < key.length(); i++) 
+    { 
+        int index = key[i] - 'a'; 
+        if (!tCrawl->children[index]) 
+            tCrawl->children[index] = getNode(); 
+  
+        tCrawl = tCrawl->children[index]; 
+    } 
+    tCrawl->isEndOfWord = true; 
+}
+bool search(struct TN *root, string key) 
+{ 
+    struct TN *tCrawl = root; 
+  
+    for (int i = 0; i < key.length(); i++) 
+    { 
+        int index = key[i] - 'a'; 
+        if (!tCrawl->children[index]) 
+            return false; 
+  
+        tCrawl = tCrawl->children[index]; 
+    } 
+  
+    return (tCrawl != NULL && tCrawl->isEndOfWord); 
+} 
+  
+
+void read_file() 
+{ 
+  
+    fstream fin; 
+    fin.open("EnglishDictionary.csv", ios::in); 
+    vector<string> row; 
+    string line, word, temp; 
+  
+    while (fin >> temp) 
+    { 
+        row.clear();
+        getline(fin, line); 
+        stringstream s(line); 
+        while (getline(s, word, ', ')) 
+        { 
+            row.push_back(word); 
+        }
+    }
+}
+
+int main() 
+{ 
+    string input;
+    
+    for(long i=0;i<5000; i++)
+    {
+        fin >> string keys[i];
+    }
+    int n = sizeof(keys)/sizeof(keys[0]); 
+  
+    struct TrieNode *root = getNode(); 
+  
+    for (int i = 0; i < n; i++) 
+        insert(root, keys[i]); 
+    cout << "Enter input";
+    cin>>input;
+    search(root, input)? cout << input : 
+                         cout << "No\n"; 
+   
+    return 0; 
+}
